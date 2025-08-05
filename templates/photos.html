@@ -6,9 +6,48 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Photos</title>
+    <style>
+        .filter-info {
+            background-color: #f0f0f0;
+            padding: 10px;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+        .error {
+            color: red;
+        }
+        .examples {
+            font-size: 0.9em;
+            color: #666;
+        }
+    </style>
 </head>
 <body>
     <h1>Photos</h1>
+    
+    <div class="filter-info">
+        {% if filter_pattern %}
+            <p><strong>Active filter:</strong> {{ filter_pattern }}</p>
+            {% if filter_error %}
+                <p class="error">{{ filter_error }}</p>
+            {% endif %}
+        {% else %}
+            <p><strong>No filter active</strong></p>
+        {% endif %}
+        
+        <div class="examples">
+            <p><strong>Filter examples:</strong></p>
+            <ul>
+                <li><code>/?filter=^b</code> - Images starting with 'b'</li>
+                <li><code>/?filter=.*sun.*</code> - Images containing 'sun'</li>
+                <li><code>/?filter=(beach|sunset)</code> - Images containing 'beach' or 'sunset'</li>
+                <li><code>/?filter=\.jpg$</code> - Images ending with '.jpg'</li>
+            </ul>
+        </div>
+    </div>
+    
+    <p><strong>{{ images|length }} images found</strong></p>
+    
     {% for image in images %}
         <img src="{{ url_for('static', filename=image) }}" alt="photo" width="200">
     {% endfor %}
